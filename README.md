@@ -459,11 +459,3 @@ acknowledge and give our thanks to:
 - [doxygen](https://www.doxygen.nl/),
   [Netlify](https://www.netlify.com) -
   documentation generation and hosting
-
-## Sponsors
-
-Special thanks to our current sponsors:
-
-- <a href="https://www.digitalocean.com"><img alt="DigitalOcean logo" src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="151px"></a>&emsp;
-  is sponsoring server hosting for $400 for one year. DigitalOcean has sponsored
-  us every year since 2015.
