@@ -390,9 +390,6 @@ static GC_Announces *_Nullable gca_new_announces(const Memory *_Nonnull mem, GC_
     return announces;
 }
 
-/* How long we save a peer's announce before we consider it stale and remove it. */
-#define GCA_ANNOUNCE_SAVE_TIMEOUT 30
-
 static void purge_stale_announces(const Mono_Time *mono_time, GC_Announces_List *gc_announces_list)
 {
     GC_Announces *announces = gc_announces_list->root_announces;

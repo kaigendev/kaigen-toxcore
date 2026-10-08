@@ -246,6 +246,8 @@ static int8_t get_slot(const Logger *_Nonnull log, struct RTPWorkBufferList *_No
         for (uint8_t i = 0; i < wkbl->next_free_entry; ++i) {
             const struct RTPWorkBuffer *slot = &wkbl->work_buffer[i];
 
+            assert(slot->buf != nullptr);
+
             if ((slot->buf->header.sequnum == header->sequnum) && (slot->buf->header.timestamp == header->timestamp)) {
                 // Sequence number and timestamp match, so this slot belongs to
                 // the same frame.
@@ -416,14 +418,13 @@ static bool fill_data_into_slot(const Logger *_Nonnull log, struct RTPWorkBuffer
     // We're either filling the data into an existing slot, or in a new one that
     // is the next free entry.
     assert(slot_id <= wkbl->next_free_entry);
+    assert(slot_id < USED_RTP_WORKBUFFER_COUNT);
     struct RTPWorkBuffer *const slot = &wkbl->work_buffer[slot_id];
 
     assert(header != nullptr);
     assert(is_keyframe == (bool)((header->flags & RTP_KEY_FRAME) != 0));
 
-    if (slot->received_len == 0) {
-        assert(slot->buf == nullptr);
-
+    if (slot->buf == nullptr) {
         if (header->data_length_full > MAX_RTP_FRAME_SIZE) {
             LOGGER_WARNING(log, "RTP frame too large: %u > %u", (unsigned)header->data_length_full, (unsigned)MAX_RTP_FRAME_SIZE);
             return false;
@@ -526,6 +527,11 @@ static void update_bwc_values(RTPSession *_Nonnull session, const struct RTPMess
 static int handle_video_packet(const Logger *_Nonnull log, RTPSession *_Nonnull session, const struct RTPHeader *_Nonnull header,
                                const uint8_t *_Nonnull incoming_data, uint16_t incoming_data_length)
 {
+    if (incoming_data_length == 0) {
+        // video always has a payload, ignore
+        return -1;
+    }
+
     // Full frame length in bytes. The frame may be split into multiple packets,
     // but this value is the complete assembled frame size.
     const uint32_t full_frame_length = header->data_length_full;
@@ -634,7 +640,7 @@ void rtp_receive_packet(RTPSession *session, const uint8_t *data, size_t length)
     // Get the packet type.
     const uint8_t packet_type = data[0];
     const uint8_t *payload = &data[1];
-    // TODO(Zoff): is this ok?
+    assert(length - 1 < UINT16_MAX);
     const uint16_t payload_size = (uint16_t)length - 1;
 
     // Unpack the header.

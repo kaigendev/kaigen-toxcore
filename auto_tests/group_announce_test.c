@@ -231,7 +231,8 @@ static void test_gca_live_chat_cap(void)
     ck_assert(list->live_chats == GCA_MAX_LIVE_CHATS);
     ck_assert(count_live_chats(list) == GCA_MAX_LIVE_CHATS);
 
-    clock.now_ms += UINT64_C(15000);
+    const uint64_t half_timeout_ms = (GCA_ANNOUNCE_SAVE_TIMEOUT * UINT64_C(1000)) / 2;
+    clock.now_ms += half_timeout_ms;
     mono_time_update(mono_time);
 
     uint8_t existing_chat_id[CHAT_ID_SIZE];
@@ -253,7 +254,7 @@ static void test_gca_live_chat_cap(void)
     ck_assert(gca_add_announce(mem, mono_time, list, &announce) == nullptr);
     ck_assert(list->live_chats == GCA_MAX_LIVE_CHATS);
 
-    clock.now_ms += UINT64_C(16000);
+    clock.now_ms += half_timeout_ms + UINT64_C(1000);
     mono_time_update(mono_time);
     fill_small_public_announce(rng, &announce, overflow_chat_id);
     ck_assert(gca_add_announce(mem, mono_time, list, &announce) != nullptr);

@@ -1,10 +1,10 @@
 # Kaigen Tox Core
 
 Kaigen Tox Core is the Tox protocol core library maintained for the Kaigen
-messenger. This source release is based on TokTok/c-toxcore `0.2.23` at commit
-`1d79022fb4e56dffe0bbd075d47e00f7a0b62ab3` and includes Kaigen security,
-resource-bounding, and reliability changes. See [UPSTREAM.md](UPSTREAM.md) for
-the exact source lineage and change scope.
+messenger. This fork incorporates the accepted update to TokTok/c-toxcore
+`v0.2.24-rc.2` at commit `e033325ac3472d571274ec70fdb5a220a22b01bc`, with
+Kaigen security, resource-bounding, and reliability changes preserved.
+See [UPSTREAM.md](UPSTREAM.md) for the exact source lineage and change scope.
 
 The library remains GPL-3.0-or-later. Original copyright, contributor history,
 third-party notices, and licenses are preserved.
@@ -28,10 +28,17 @@ Kaigen использует `c-toxcore` как сетевое ядро Tox. Со
 - обновление upstream проводится управляемо: изменения анализируются, наши
   исправления переносятся, после чего повторяются проверки совместимости.
 
-Текущий релиз форка — `0.2.23-kaigen.1`. Он основан на TokTok/c-toxcore 0.2.23,
-commit `1d79022fb4e56dffe0bbd075d47e00f7a0b62ab3`. Авторство исходного проекта и
-лицензия GPL-3.0-or-later сохранены. Точная история происхождения опубликована
-в [UPSTREAM.md](UPSTREAM.md).
+Перенос TokTok/c-toxcore `v0.2.24-rc.2`, commit
+`e033325ac3472d571274ec70fdb5a220a22b01bc`, принят для форка Kaigen.
+Сохранены исправления Kaigen из базового коммита
+`b89934a6c152e5645697ee2974c9a5859855ad7c`, авторство исходного проекта и
+лицензия GPL-3.0-or-later. Точная история происхождения — в
+[UPSTREAM.md](UPSTREAM.md).
+
+Обновление upstream добавляет проверку соответствия ключей при групповом
+handshake, исправляет Windows LAN discovery, разбор IP/port, интервалы групповых
+объявлений и обработку ошибочных RTP/MSI пакетов. Описанные ниже шесть защитных
+изменений Kaigen сохранены; они не являются полным списком исправлений upstream.
 
 ### Какие проблемы были устранены
 
